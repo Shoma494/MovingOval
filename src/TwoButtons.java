@@ -4,103 +4,73 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TwoButtons {
-    JFrame frame;
-    JLabel label;
 
-    public static void main(String[] args) {
+
+    int xPosition=0;
+    int yPosition=0;
+    int fillOvalWidth=50;
+    int fillOvalHeight=50;
+
+    public static void main(String[] args)  {
         TwoButtons gui =new TwoButtons();
+
         gui.go();
 
 
     }
 
-    private void go() {
-        frame =new JFrame();
+    public void go() {
+        JFrame frame =new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JButton labelButton =new JButton("Change Label");
-        labelButton.addActionListener(new LabelListener());
 
-        JButton colorButton =new JButton("Change Circle");
-
-
-        label = new JLabel("I'm label");
         MyDrawPanel myDrawPanel=new MyDrawPanel();
 
 
-        frame.getContentPane().add(BorderLayout.SOUTH, colorButton);
-        frame.getContentPane().add(BorderLayout.CENTER, myDrawPanel);
-        frame.getContentPane().add(BorderLayout.EAST, labelButton);
-        frame.getContentPane().add(BorderLayout.WEST, label);
+        frame.getContentPane().add(myDrawPanel);
 
 
 
 
-        frame.setSize(500, 500);
+
+        frame.setSize(800, 800);
         frame.setVisible(true);
-        myDrawPanel.y=frame.getHeight()-30;
 
 
-        while (myDrawPanel.y>0) { myDrawPanel.y=myDrawPanel.y-10;
-            colorButton.addActionListener(new ColorListener());
+    /////////конец метода go
+        while (true){
+            xPosition++;
+            if (xPosition==frame.getWidth()) {xPosition=0;
+            fillOvalWidth=fillOvalWidth+20;}
+            yPosition++;
+            if (yPosition==frame.getHeight()) {yPosition=0;
+            fillOvalHeight=fillOvalHeight+20;}
+            myDrawPanel.repaint();
 
-        }
 
-
-
-    }
-
-    class LabelListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-          label.setText("Oach");
-
-        }
-    }
-
-    class ColorListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            frame.repaint();
-
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static class MyDrawPanel extends JPanel {
-        int x;
-        int y;
-
-        public MyDrawPanel() {
-
-        }
 
 
-        public MyDrawPanel(int x, int y) {
-            this.x=x;
-            this.y=y;
-        }
+
+    public  class MyDrawPanel extends JPanel {
+
 
         public void paintComponent(Graphics g) {
-            Graphics2D graphics2D=(Graphics2D) g;
-
-
-            int red = (int) (Math.random()*255);
-            int green =(int) (Math.random()*255);
-            int blue =(int) (Math.random()*255);
-            Color randomColor1 =new Color(red, green, blue);
-
-            red = (int) (Math.random()*255);
-            green =(int) (Math.random()*255);
-            blue =(int) (Math.random()*255);
-            Color randomColor2 =new Color(red, green, blue);
-
-            GradientPaint gradientPaint = new GradientPaint(this.getX(),this.getY(),randomColor2,this.getX()+this.getWidth(),this.getY()+this.getHeight(),randomColor1);
 
 
 
+            g.setColor(Color.white);
+           g.fillRect(0,0, this.getWidth(), this.getHeight());
+            g.setColor(Color.blue);
+            g.fillOval(xPosition,yPosition,fillOvalWidth,fillOvalHeight);
 
-            graphics2D.setPaint(gradientPaint);
-            graphics2D.fillOval(x,y,50,50);
 
 
         }
