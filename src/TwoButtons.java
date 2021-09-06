@@ -1,3 +1,5 @@
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,9 +19,12 @@ public class TwoButtons {
         gui.go();
 
 
+
+
     }
 
     public void go() {
+        MiniMinimusicApp mini = new MiniMinimusicApp();
         JFrame frame =new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -33,23 +38,44 @@ public class TwoButtons {
 
 
 
-        frame.setSize(800, 800);
+        frame.setSize(500, 400);
         frame.setVisible(true);
 
 
-    /////////конец метода go
+
+
+        int a =1;
+        int b =1;
         while (true){
-            xPosition++;
-            if (xPosition==frame.getWidth()) {xPosition=0;
-            fillOvalWidth=fillOvalWidth+20;}
-            yPosition++;
-            if (yPosition==frame.getHeight()) {yPosition=0;
-            fillOvalHeight=fillOvalHeight+20;}
+            xPosition= xPosition+a;
+            if (xPosition==frame.getWidth()-fillOvalWidth|| xPosition==0) {a=-1*a;
+                try {
+                    mini.play();
+                } catch (InvalidMidiDataException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (MidiUnavailableException e) {
+                    e.printStackTrace();
+                }
+            }
+            yPosition=yPosition+b;
+            if (yPosition==frame.getHeight()-fillOvalHeight|| yPosition==0) {b=-1*b;
+                try {
+                    mini.play();
+                } catch (InvalidMidiDataException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (MidiUnavailableException e) {
+                    e.printStackTrace();
+                }
+            }
             myDrawPanel.repaint();
 
 
             try {
-                Thread.sleep(1);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -66,7 +92,7 @@ public class TwoButtons {
 
 
 
-            g.setColor(Color.white);
+            g.setColor(Color.cyan);
            g.fillRect(0,0, this.getWidth(), this.getHeight());
             g.setColor(Color.blue);
             g.fillOval(xPosition,yPosition,fillOvalWidth,fillOvalHeight);
